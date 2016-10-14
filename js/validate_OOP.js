@@ -1,11 +1,9 @@
-var _ = require('underscore');
-
-var board = [['-', '-', '-', '-', '-', '-', '-'],
-			 ['-', 'Y', 'R', '-', '-', '-', 'R'],
-			 ['-', '-', 'R', '-', '-', 'R', '-'],
-			 ['-', '-', 'Y', 'Y', 'Y', 'Y', '-'],
-			 ['-', '-', 'R', '-', '-', '-', '-'],
-			 ['R', '-', '-', '-', '-', '-', '-']];				
+var board = [['-', '-', '-', '-', '-', '-', 'Y'],
+			 ['R', 'R', 'R', 'R', '-', '-', 'Y'],
+			 ['-', '-', '-', '-', '-', 'Y', 'Y'],
+			 ['-', 'Y', 'Y', 'Y', 'Y', '-', 'R'],
+			 ['-', '-', '-', 'R', 'Y', '-', '-'],
+			 ['-', '-', '-', '-', '-', 'Y', '-']];				
 
 //create a constructor function that takes a multiemensional board...
 var Validate = function(board) {
@@ -16,20 +14,27 @@ var Validate = function(board) {
 Validate.prototype.checkIt = function(board){
 	//declare a variable and assign it a filtered version of the adjusted board, filter out
 	//any arr that does not contain 'Y' or 'R'...
-	var filterOut = _.map(board, (arr, ind, coll)=>{
-		var removeMinus = _.filter(arr, (val)=>{
-			if(val === 'Y' || val === 'R'){
-				return val;
-			}
-		});
-		if(removeMinus.length >= 4){
-			if(_.every(removeMinus, (val)=>{return val === 'Y'}) || _.every(removeMinus, (val)=>{return val === 'R'})){
-				return arr;
-			}
-		}
+	var prepBoard = board.filter((arr) => {
+		arr = _.pull(arr, '-');
+		if(arr.length >= 4)return arr;
 	});
 
-	return filterOut;
+	var winners = [];
+
+	_.each(prepBoard, (arr) => {
+		var totalY = 0;
+		var totalR = 0;
+
+		_.each(arr, (val) => {
+			if(val === 'Y')totalY++;
+			if(val === 'R')totalR++;
+		});	
+
+		if(totalY >= 4)winners.push('Y');
+		if(totalR >= 4)winners.push('R');
+	});
+
+	return winners;
 };
 //add a function that will convert all columns into horizontal arrays...
 Validate.prototype.horiZise = function(board){
@@ -68,17 +73,24 @@ Validate.prototype.shiftEm = function(board){
 //getter that converts diagnols, columns, and horizontals into only arrays contianing 4 r's or y's...
 Object.defineProperty(Validate.prototype, 'sorted', {
 	get: function(){
-		return this.checkIt(this.shiftEm(this.board))
-		.concat(this.checkIt(this.horiZise(this.board)), this.checkIt(this.board));
+		var diagnols = this.checkIt(this.shiftEm(this.board.slice()));
+		var columns = this.checkIt(this.horiZise(this.board.slice()));
+		var horizontal = this.checkIt(this.board.slice());
+
+		return [diagnols, columns, horizontal];
 	}
 }); 
 //add a prototype that announces who the winner is or if it is a tie...
-Validate.prototype.andTheWinner = function(){
-
+Object.prototype.weHaveAWinner = function(){
+	var checked = _.filter(this.sorted, (arr) => {
+		if(arr.length)return arr;
+	});
+	
+	return _.flatten(checked);
 };
 
 var gameOn = new Validate(board);
-console.log(gameOn.sorted);
+console.log(gameOn.weHaveAWinner());
 
 
 
