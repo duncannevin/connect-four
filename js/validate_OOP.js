@@ -1,13 +1,9 @@
-var board = [['-', '-', '-', '-', '-', '-', 'Y'],
-			 ['R', 'R', 'R', 'R', '-', '-', 'Y'],
-			 ['-', '-', '-', '-', '-', 'Y', 'Y'],
-			 ['-', 'Y', 'Y', 'Y', 'Y', '-', 'R'],
-			 ['-', '-', '-', 'R', 'Y', '-', '-'],
-			 ['-', '-', '-', '-', '-', 'Y', '-']];				
+var _ = require('lodash');				
 
 //create a constructor function that takes a multiemensional board...
 var Validate = function(board) {
 	this.board = board;
+	return this;
 };
 //a function that iterates through sortedBoard to see if there are any 
 //four in a row, if this is the case will return the winner...
@@ -81,7 +77,7 @@ Object.defineProperty(Validate.prototype, 'sorted', {
 	}
 }); 
 //add a prototype that announces who the winner is or if it is a tie...
-Object.prototype.weHaveAWinner = function(){
+Validate.prototype.weHaveAWinner = function(){
 	var checked = _.filter(this.sorted, (arr) => {
 		if(arr.length)return arr;
 	});
