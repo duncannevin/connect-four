@@ -85,7 +85,7 @@ Validate.prototype.weHaveAWinner = function(){
 	return _.flatten(checked);
 };
 
-var gameOn = new Validate(board);
+var gameOn = new Validate(playBoard);
 console.log(gameOn.weHaveAWinner());
 
 
