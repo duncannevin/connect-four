@@ -24,13 +24,15 @@ body {
 	height: 30em;
 	width: 35em;
 	left: 50%;
-	top: 50%;
-	margin: -15em 0 0 -17.5em; 
+	bottom: 30%;
+	margin: 0 0 0 -17.5em; 
 }
-.square{
+.square, .invisible-square{
 	display: table-cell;
 	height: 5em;
 	width: 5em;
+}
+.square{
 	overflow: hidden;
 	z-index: 5;
 }
@@ -47,11 +49,11 @@ body {
 	position: absolute;
 }
 .red-stack, .red{
-	left: 10%;
+	left: -20%;
 	background-color: red;
 }
 .blue-stack, .blue{
-	right: 10%;
+	right: -20%;
 	background-color: blue;
 }
 .token{	
@@ -74,13 +76,20 @@ body {
 	display: block;
 }
 .red, .blue{	
-	bottom: 35%;
+	bottom: 10%;
 }
 .red-stack, .blue-stack{
-	bottom: 27%;
+	bottom: 0%;
 }
-
-
+.back-ground-red{
+	background-color: red;
+}
+.back-ground-blue{
+	background-color: blue;
+}
+.tall-row{
+	height: 10em;
+}
 
 
 
