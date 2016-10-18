@@ -18,14 +18,13 @@
 				playBoard[ind1][ind2] = value;
 			};
 			obj.val = function(){
-				console.log(validate.call(this, playBoard));
+				return validate.call(this, playBoard);
 			}
 
 			return obj;
 		}	 		 	 
 	}
 			 		 	 
-
 	let play = (board) => {
 		//keeps track of whos turn it is...
 		let turn = 'red';
@@ -116,7 +115,28 @@
 			turn = turn === 'red' ? 'blue' : 'red';
 			//reset draggable...
 			controlDrag();
-		};	 	
+		};
+		let refresh = (winner) => {
+
+			turn = 'red'; 
+
+			$('.board').empty();
+			play('.board');
+			appendTokens(null);
+			bControl = control();
+		};	 
+		//function that checks for a winner and resets the board...
+		let valid = () => {
+
+			let check = current.val();
+
+			if(check !== undefined){
+				check = check === 'R' ? 'Red' : 'Blue';
+				alert(check + ' won!');
+				refresh(check);
+			}
+			console.log(current.val());
+		};	
 		//function handles a token drop once it is in the droppable div...
 		let dropToken = (dis, ev) => {
 			//grabs the correct data for the first square, essentially which div the token was placed...
@@ -140,13 +160,13 @@
 					//resets board...
 					reset(bottomDiv.slice());
 					//runs the validator...
-					current.val(playBoard);
+					valid();
 					return;	
 				}
 				//adds one to the top position each iteration...	
 				begin.top += 1;
 				//controls time between iteration...
-				setTimeout(recur, 3);
+				setTimeout(recur, 1);
 			})()
 		};
 		boardBuilder();
