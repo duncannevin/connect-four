@@ -1,4 +1,4 @@
-//document ready...
+// document ready...
 (() => {
 
 	let control = () => {
@@ -24,7 +24,7 @@
 			return obj;
 		}	 		 	 
 	}
-			 		 	 
+
 	let play = (board) => {
 		//keeps track of whos turn it is...
 		let turn = 'red';
